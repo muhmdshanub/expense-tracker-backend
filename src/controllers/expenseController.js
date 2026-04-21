@@ -4,9 +4,14 @@ const responseHelper = require("../utils/responseHelper");
 class ExpenseController {
   async getExpenses(req, res, next) {
     try {
-      const { category, sort } = req.query;
-      const expenses = await expenseService.getExpenses(category, sort);
-      return responseHelper.success(res, 200, expenses, "Expenses retrieved successfully");
+      const { category, sort, page, limit } = req.query;
+      const result = await expenseService.getExpenses(
+        category, 
+        sort, 
+        parseInt(page) || 1, 
+        parseInt(limit) || 20
+      );
+      return responseHelper.success(res, 200, result, "Expenses retrieved successfully");
     } catch (error) {
       next(error);
     }

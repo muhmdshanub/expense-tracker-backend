@@ -3,9 +3,10 @@ const { v4: uuidv4 } = require("uuid");
 const AppError = require("../utils/AppError");
 
 class ExpenseService {
-  async getExpenses(category, sort) {
+  async getExpenses(category, sort, page = 1, limit = 20) {
     const sortDesc = sort === "date_desc" || !sort; // default to desc
-    return await expenseRepository.getAll(category, sortDesc);
+    const offset = (Math.max(1, page) - 1) * limit;
+    return await expenseRepository.getAll(category, sortDesc, limit, offset);
   }
 
   async createExpense(data) {
