@@ -2,7 +2,7 @@ const Database = require('better-sqlite3');
 const path = require('path');
 
 // Connect to SQLite DB (creates file if it doesn't exist in the project root)
-const dbPath = path.join(__dirname, '..', 'expenses.db');
+const dbPath = path.join(__dirname, '..', '..', 'expenses.db');
 const db = new Database(dbPath);
 
 // Enable Write-Ahead Logging for better performance / concurrency
