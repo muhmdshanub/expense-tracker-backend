@@ -1,7 +1,7 @@
 const db = require("../config/db");
 
 class ExpenseRepository {
-  async getAll(category, sortDesc, limit = 20, offset = 0) {
+  async getAll(category, sortDesc, limit = 20, offset = 0, startDate = null, endDate = null) {
     let query = `
       SELECT *, 
              SUM(amount) OVER() as totalAmount, 
@@ -9,10 +9,25 @@ class ExpenseRepository {
       FROM expenses
     `;
     const params = [];
+    const conditions = [];
 
     if (category) {
-      query += " WHERE category = ?";
+      conditions.push("category = ?");
       params.push(category);
+    }
+    
+    if (startDate) {
+      conditions.push("date >= ?");
+      params.push(startDate);
+    }
+    
+    if (endDate) {
+      conditions.push("date <= ?");
+      params.push(endDate);
+    }
+
+    if (conditions.length > 0) {
+      query += ` WHERE ${conditions.join(" AND ")}`;
     }
 
     if (sortDesc) {
@@ -31,10 +46,7 @@ class ExpenseRepository {
       return { items: [], totalAmount: 0, totalCount: 0 };
     }
 
-    // Extract totals from the first row (they are the same for all rows in this result set)
     const { totalAmount, totalCount } = rows[0];
-    
-    // Clean up items (remove metadata columns from individuals to keep it clean, optional but recommended)
     const items = rows.map(({ totalAmount, totalCount, ...item }) => item);
 
     return { items, totalAmount, totalCount };
