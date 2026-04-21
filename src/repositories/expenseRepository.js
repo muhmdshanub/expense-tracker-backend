@@ -11,9 +11,9 @@ class ExpenseRepository {
     }
 
     if (sortDesc) {
-      query += " ORDER BY date DESC";
+      query += " ORDER BY date DESC, created_at DESC";
     } else {
-      query += " ORDER BY date DESC";
+      query += " ORDER BY date ASC, created_at ASC";
     }
 
     const stmt = db.prepare(query);

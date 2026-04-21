@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(requestLogger);
 
 // Health check route (IMPORTANT for Render)
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.send("API is running with cleanly structured architecture!");
 });
 
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 app.use("/expenses", expenseRoutes);
 
 // 404 Handler
-app.use((req, res, next) => {
+app.use((_req, res, _next) => {
   responseHelper.error(res, 404, "Route not found");
 });
 
