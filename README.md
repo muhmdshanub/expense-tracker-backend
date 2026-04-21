@@ -24,6 +24,7 @@ A production-ready, minimal Node.js backend for the Expense Tracker application.
 - **No ORM (e.g. Prisma, TypeORM):** Kept the bundle extremely lightweight by using raw parameterized SQL. This is faster to setup given the time constraints but trades off auto-generated type safety.
 - **No Migration CLI Tool:** The SQLite schema boots explicitly via `CREATE TABLE IF NOT EXISTS` natively on start. Real systems would use semantic migrations (like `knex`).
 - **Authentication/Users:** Finance data inherently spans multiple users, but Auth (JWT, Passport.js, tracking `user_id` inside the `expenses` table) was skipped specifically to prioritize fulfilling core criteria.
+- **Environment Variables (`.env`):** Technically, we don't strictly need a `.env` file since Render automatically injects `process.env.PORT` in production (defaulting to 5000 locally), SQLite avoids needing a `DATABASE_URL`, and lack of Auth means we skip `JWT_SECRET`. However, an `.env.example` is committed purely as a future-proofing best practice.
 - **Pagination:** The `GET /expenses` acts gracefully for small datasets, but does not use `OFFSET/LIMIT` yet to keep the eventual Frontend pagination UI simple. 
 
 ## 🔌 API Endpoints
